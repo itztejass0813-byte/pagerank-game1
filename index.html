@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PageRank: The Web's Secret Score</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="logo">PAGE<span>RANK</span></div>
+
+    <div class="progress">
+        <div id="progressBar"></div>
+    </div>
+
+    <div class="levelText">
+        LEVEL <span id="levelNumber">0</span>/7
+    </div>
+</header>
+
+
+<main>
+
+    <!-- INTRO -->
+    <section class="screen active" id="intro">
+
+        <div class="hero">
+
+            <div class="badge">THE WEB IS HUGE</div>
+
+            <h1>
+                Who deserves to be<br>
+                <span>#1 on the internet?</span>
+            </h1>
+
+            <p class="heroText">
+                Millions of pages are competing for attention.
+                But how do we decide which pages are actually important?
+            </p>
+
+            <button class="primaryBtn" onclick="startGame()">
+                ENTER THE WEB →
+            </button>
+
+        </div>
+
+        <div class="storyCard">
+
+            <div class="storyIcon">🌐</div>
+
+            <div>
+                <h3>Your mission</h3>
+
+                <p>
+                    Discover how PageRank can estimate the importance
+                    of web pages — without knowing anything about it beforehand.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LEVEL 1 -->
+    <section class="screen" id="level1">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">MISSION 01</div>
+
+            <h2>Can we just count words?</h2>
+
+            <p>
+                Imagine you're searching for the best pizza page.
+            </p>
+
+        </div>
+
+
+        <div class="comparison">
+
+            <div class="webPage pageBlue">
+
+                <div class="browserBar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="pageContent">
+
+                    <div class="fakeLogo">PIZZA WORLD</div>
+
+                    <h3>Best Pizza Guide</h3>
+
+                    <p>
+                        Pizza pizza pizza pizza pizza pizza pizza...
+                    </p>
+
+                    <div class="bigNumber">47</div>
+
+                    <small>times the word "pizza" appears</small>
+
+                </div>
+
+            </div>
+
+
+            <div class="vs">VS</div>
+
+
+            <div class="webPage pageGreen">
+
+                <div class="browserBar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="pageContent">
+
+                    <div class="fakeLogo">PIZZA EXPERT</div>
+
+                    <h3>Best Pizza Guide</h3>
+
+                    <p>
+                        Reviews, locations, prices and recommendations.
+                    </p>
+
+                    <div class="bigNumber">8</div>
+
+                    <small>times the word "pizza" appears</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="questionBox">
+
+            <h3>🤔 Which page should rank higher?</h3>
+
+            <p>
+                Pick one. There is no penalty for guessing.
+            </p>
+
+            <div class="choiceButtons">
+
+                <button onclick="wordChoice('A')">
+                    PAGE A
+                </button>
+
+                <button onclick="wordChoice('B')">
+                    PAGE B
+                </button>
+
+            </div>
+
+            <div id="wordFeedback" class="feedback"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LEVEL 2 -->
+    <section class="screen" id="level2">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">MISSION 02</div>
+
+            <h2>Links are votes.</h2>
+
+            <p>
+                What if websites could recommend other websites?
+            </p>
+
+        </div>
+
+
+        <div class="voteScene">
+
+            <div class="bigPage importantPage">
+                ⭐
+                <strong>IMPORTANT SITE</strong>
+                <small>Lots of people trust this site.</small>
+            </div>
+
+            <div class="arrowVote">→</div>
+
+            <div class="bigPage targetPage">
+                🎯
+                <strong>PAGE X</strong>
+                <small>Trying to become important.</small>
+            </div>
+
+        </div>
+
+
+        <div class="infoCard">
+
+            <h3>Think of a link as a recommendation.</h3>
+
+            <p>
+                When one page links to another page, it can be viewed
+                as a signal that the other page is worth visiting.
+            </p>
+
+        </div>
+
+
+        <div class="questionBox">
+
+            <h3>But are all votes equally valuable?</h3>
+
+            <div class="choiceButtons">
+
+                <button onclick="voteChoice('same')">
+                    YES — ALL LINKS ARE EQUAL
+                </button>
+
+                <button onclick="voteChoice('important')">
+                    NO — IMPORTANT LINKS CAN MATTER MORE
+                </button>
+
+            </div>
+
+            <div id="voteFeedback" class="feedback"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LEVEL 3 -->
+    <section class="screen" id="level3">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">MISSION 03</div>
+
+            <h2>You are the Random Surfer.</h2>
+
+            <p>
+                Imagine randomly browsing the internet.
+                Where do you spend your time?
+            </p>
+
+        </div>
+
+
+        <div class="surferArea">
+
+            <div class="surferStatus">
+
+                <div class="surferEmoji">🧑‍💻</div>
+
+                <div>
+                    <strong id="surferStatus">
+                        You are ready to surf.
+                    </strong>
+
+                    <p id="surferMessage">
+                        Click START and follow the links.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="surferPages">
+
+                <button class="surferPage" id="surfA">
+                    <strong>A</strong>
+                    <span>Home</span>
+                </button>
+
+                <button class="surferPage" id="surfB">
+                    <strong>B</strong>
+                    <span>News</span>
+                </button>
+
+                <button class="surferPage" id="surfC">
+                    <strong>C</strong>
+                    <span>Reviews</span>
+                </button>
+
+                <button class="surferPage" id="surfD">
+                    <strong>D</strong>
+                    <span>Guide</span>
+                </button>
+
+            </div>
+
+            <button class="primaryBtn" onclick="startSurfer()">
+                START SURFING
+            </button>
+
+            <div class="surferCounter">
+                Visits:
+                <span id="visitCounter">A: 0 | B: 0 | C: 0 | D: 0</span>
+            </div>
+
+        </div>
+
+
+        <div id="surferReveal" class="infoCard hidden">
+
+            <h3>💡 You discovered something important.</h3>
+
+            <p>
+                If a random surfer keeps arriving at a page,
+                that page may be considered more important.
+            </p>
+
+            <strong>
+                This is the core intuition behind PageRank.
+            </strong>
+
+        </div>
+
+        <button
+            id="surferContinue"
+            class="secondaryBtn hidden"
+            onclick="goTo('level4')">
+
+            I UNDERSTAND → CONTINUE
+
+        </button>
+
+    </section>
+
+
+    <!-- LEVEL 4 -->
+    <section class="screen" id="level4">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">MISSION 04</div>
+
+            <h2>Now give the web a score.</h2>
+
+            <p>
+                Four pages. Everyone starts equal.
+                Watch what happens.
+            </p>
+
+        </div>
+
+
+        <div class="scoreStart">
+
+            <div class="scoreCard">
+                <strong>A</strong>
+                <span>0.25</span>
+            </div>
+
+            <div class="scoreCard">
+                <strong>B</strong>
+                <span>0.25</span>
+            </div>
+
+            <div class="scoreCard">
+                <strong>C</strong>
+                <span>0.25</span>
+            </div>
+
+            <div class="scoreCard">
+                <strong>D</strong>
+                <span>0.25</span>
+            </div>
+
+        </div>
+
+
+        <div class="network">
+
+            <div class="networkPage nodeA">A</div>
+            <div class="networkPage nodeB">B</div>
+            <div class="networkPage nodeC">C</div>
+            <div class="networkPage nodeD">D</div>
+
+            <svg viewBox="0 0 700 300">
+
+                <defs>
+
+                    <marker
+                        id="arrow"
+                        markerWidth="10"
+                        markerHeight="10"
+                        refX="9"
+                        refY="3"
+                        orient="auto">
+
+                        <path d="M0,0 L0,6 L9,3 z"/>
+
+                    </marker>
+
+                </defs>
+
+                <line
+                    x1="170"
+                    y1="100"
+                    x2="500"
+                    y2="70"
+                    marker-end="url(#arrow)"/>
+
+                <line
+                    x1="170"
+                    y1="120"
+                    x2="500"
+                    y2="220"
+                    marker-end="url(#arrow)"/>
+
+                <line
+                    x1="530"
+                    y1="220"
+                    x2="180"
+                    y2="100"
+                    marker-end="url(#arrow)"/>
+
+                <line
+                    x1="520"
+                    y1="70"
+                    x2="180"
+                    y2="100"
+                    marker-end="url(#arrow)"/>
+
+            </svg>
+
+        </div>
+
+
+        <div class="roundInfo">
+
+            <div>
+
+                <span>ROUND</span>
+
+                <strong id="roundNumber">0</strong>
+
+            </div>
+
+            <div>
+
+                <span>STATUS</span>
+
+                <strong id="roundStatus">READY</strong>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="roundButton"
+            class="primaryBtn"
+            onclick="runRound()">
+
+            RUN ROUND 1 →
+
+        </button>
+
+
+        <div class="ranking" id="ranking">
+
+            <h3>Current PageRank</h3>
+
+            <div id="rankingList"></div>
+
+        </div>
+
+
+        <div id="calculationExplanation" class="infoCard hidden"></div>
+
+    </section>
+
+
+    <!-- LEVEL 5 -->
+    <section class="screen" id="level5">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">MISSION 05</div>
+
+            <h2>Uh oh... the surfer is trapped.</h2>
+
+            <p>
+                What happens when pages create a loop?
+            </p>
+
+        </div>
+
+
+        <div class="loopBox">
+
+            <div class="loopPage loopA">
+                A
+            </div>
+
+            <div class="loopArrow">→</div>
+
+            <div class="loopPage loopB">
+                B
+            </div>
+
+            <div class="loopArrow">→</div>
+
+            <div class="loopPage loopA">
+                A
+            </div>
+
+        </div>
+
+
+        <div class="loopAnimation" id="loopAnimation">
+            A → B → A → B → A → B...
+        </div>
+
+
+        <div class="questionBox">
+
+            <h3>
+                What could help the surfer escape?
+            </h3>
+
+            <button
+                class="primaryBtn"
+                onclick="showDamping()">
+
+                FIND A WAY OUT →
+
+            </button>
+
+        </div>
+
+
+        <div id="dampingReveal" class="infoCard hidden">
+
+            <h3>🚪 Meet the Damping Factor</h3>
+
+            <p>
+                The surfer usually follows a link, but sometimes
+                jumps to a completely random page.
+            </p>
+
+            <div class="dampingSlider">
+
+                <label>
+                    Random jump chance:
+                    <strong id="dampingValue">15%</strong>
+                </label>
+
+                <input
+                    type="range"
+                    min="0"
+                    max="50"
+                    value="15"
+                    oninput="updateDamping(this.value)">
+
+            </div>
+
+            <p id="dampingMessage">
+                A small chance of jumping helps the surfer escape loops.
+            </p>
+
+        </div>
+
+
+        <button
+            id="dampingContinue"
+            class="secondaryBtn hidden"
+            onclick="goTo('level6')">
+
+            NEXT MISSION →
+
+        </button>
+
+    </section>
+
+
+    <!-- LEVEL 6 -->
+    <section class="screen" id="level6">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">MISSION 06</div>
+
+            <h2>Can you game PageRank?</h2>
+
+            <p>
+                You've learned the system.
+                Now try to manipulate it.
+            </p>
+
+        </div>
+
+
+        <div class="challenge">
+
+            <div class="target">
+
+                <span>🎯 YOUR TARGET</span>
+
+                <strong>MAKE PAGE D #1</strong>
+
+                <small>
+                    Add links to help D gain importance.
+                </small>
+
+            </div>
+
+
+            <div class="gameNetwork">
+
+                <button
+                    class="gameNode"
+                    id="gameA"
+                    onclick="toggleLink('A')">
+
+                    A
+
+                </button>
+
+                <button
+                    class="gameNode"
+                    id="gameB"
+                    onclick="toggleLink('B')">
+
+                    B
+
+                </button>
+
+                <button
+                    class="gameNode"
+                    id="gameC"
+                    onclick="toggleLink('C')">
+
+                    C
+
+                </button>
+
+                <button
+                    class="gameNode targetNode"
+                    id="gameD"
+                    onclick="toggleLink('D')">
+
+                    D
+
+                </button>
+
+            </div>
+
+
+            <div class="challengeControls">
+
+                <p>
+                    Click A, B or C to create a link to D.
+                </p>
+
+                <button
+                    class="primaryBtn"
+                    onclick="calculateChallenge()">
+
+                    CALCULATE RANKING
+
+                </button>
+
+            </div>
+
+
+            <div id="challengeResult" class="challengeResult"></div>
+
+        </div>
+
+
+        <button
+            id="challengeContinue"
+            class="secondaryBtn hidden"
+            onclick="goTo('level7')">
+
+            FINAL QUIZ →
+
+        </button>
+
+    </section>
+
+
+    <!-- LEVEL 7 -->
+    <section class="screen" id="level7">
+
+        <div class="sectionHeader">
+
+            <div class="levelBadge">FINAL TEST</div>
+
+            <h2>So... what is PageRank?</h2>
+
+            <p>
+                Let's see what you discovered.
+            </p>
+
+        </div>
+
+
+        <div class="quizBox">
+
+            <div class="quizQuestion">
+
+                <span>QUESTION 1</span>
+
+                <h3>
+                    What is the basic idea behind PageRank?
+                </h3>
+
+                <button onclick="answerQuiz(1, 'A')">
+                    A. Count how many times a word appears
+                </button>
+
+                <button onclick="answerQuiz(1, 'B')">
+                    B. Use the web's link structure to estimate importance
+                </button>
+
+                <button onclick="answerQuiz(1, 'C')">
+                    C. Give every page the same rank forever
+                </button>
+
+            </div>
+
+
+            <div class="quizQuestion">
+
+                <span>QUESTION 2</span>
+
+                <h3>
+                    What does the random surfer idea represent?
+                </h3>
+
+                <button onclick="answerQuiz(2, 'A')">
+                    A. A person randomly browsing the web
+                </button>
+
+                <button onclick="answerQuiz(2, 'B')">
+                    B. A hacker attacking websites
+                </button>
+
+                <button onclick="answerQuiz(2, 'C')">
+                    C. A program counting words
+                </button>
+
+            </div>
+
+
+            <div class="quizQuestion">
+
+                <span>QUESTION 3</span>
+
+                <h3>
+                    Why can an important page's link matter more?
+                </h3>
+
+                <button onclick="answerQuiz(3, 'A')">
+                    A. Because PageRank passes importance through links
+                </button>
+
+                <button onclick="answerQuiz(3, 'B')">
+                    B. Because important pages use bigger fonts
+                </button>
+
+                <button onclick="answerQuiz(3, 'C')">
+                    C. Because they contain more words
+                </button>
+
+            </div>
+
+
+            <div class="quizQuestion">
+
+                <span>QUESTION 4</span>
+
+                <h3>
+                    Why is damping useful?
+                </h3>
+
+                <button onclick="answerQuiz(4, 'A')">
+                    A. It lets the surfer sometimes jump randomly
+                </button>
+
+                <button onclick="answerQuiz(4, 'B')">
+                    B. It deletes websites
+                </button>
+
+                <button onclick="answerQuiz(4, 'C')">
+                    C. It makes every page equal
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div id="quizResult" class="finalResult"></div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+    <span>PAGE RANK: THE WEB'S SECRET SCORE</span>
+    <span>Educational Game</span>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
